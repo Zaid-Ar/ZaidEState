@@ -6,7 +6,7 @@
 //     setFormData({...formData,[e.target.id]:e.target.value})
 //    }
 //    const handleSubmit = async (e)=>{
-//     e.preventDefault() 
+//     e.preventDefault()
 //     const res = await fetch ("/api/auth/signup",{
 //       method:"POST",
 //       headers:{
@@ -15,7 +15,7 @@
 //       body:JSON.stringify(formData)
 //     })
 //    const data = await res.json()
-//    console.log(data) 
+//    console.log(data)
 //   }
 //      return (
 //     <div className="p-3 max-w-lg mx-auto">
@@ -63,14 +63,14 @@
 //     const userNameRef = useRef();
 //     const emailRef = useRef();
 //     const passwordRef = useRef();
-  
+
 //    const handleSubmit = async (e)=>{
-//     e.preventDefault() 
+//     e.preventDefault()
 //      const username = userNameRef.current.value;
 //      const email = emailRef.current.value;
 //      const password = passwordRef.current.value;
 //      const res = await fetch ("/api/auth/signup",{
-//       username,   
+//       username,
 //       email,
 //       password,
 //       method:"POST",
@@ -80,10 +80,9 @@
 //       body:JSON.stringify({username,email,password})
 //     })
 //    const data = await res.json()
-//    console.log(data) 
+//    console.log(data)
 //   }
 
- 
 //      return (
 //        <div className="p-3 max-w-lg mx-auto">
 //          <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
@@ -123,46 +122,50 @@
 //      );
 // }
 
-
-
-import React, { useRef, useState } from "react";
-import { Link} from "react-router-dom";
+import React, { useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 export default function SignUp() {
   const userNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  const [loading,setLoading] = useState(false)
-  const [error,setError] = useState(false)
+  const { loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const username = userNameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-   try {
-     setLoading(true)
-     setError(false);
-     const res = await fetch("/api/auth/signup", {
-       username,
-       email,
-       password,
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({ username, email, password }),
-     });
-     const data = await res.json();
-     console.log(data);
-     setLoading(false)
-     if(data.success === false){
-      setError(true)
-      return
-     }
-     
-   } catch (error) {
-    setLoading(true)
-    setError(false)
-   }
+    try {
+      dispatch(signInStart());
+      const res = await fetch("/api/auth/signup", {
+        username,
+        email,
+        password,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await res.json();
+      console.log(data);
+
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(signInSuccess(data));
+      navigate("/sign-in");
+    } catch (error) {
+      signInFailure(error);
+    }
   };
 
   return (
@@ -191,23 +194,18 @@ export default function SignUp() {
           ref={passwordRef}
         />
         <button className="bg-slate-700 text-white p-3 rounded-lg uppercase disabled:opacity-80 hover:opacity-95 ">
-          {loading ? "loading..." : "Sign In"}
+          {loading ? "loading..." : "Sign Up"}
         </button>
       </form>
       <div className="mt-5 flex gap-2">
         <p>Have an account?</p>
         <Link to="/sign-in">
-          <span className="text-blue-500">
-            Sign In
-          </span>
+          <span className="text-blue-500">Sign In</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error && "Something went wrong"}</p>
+      <p className="text-red-700 mt-5">
+        {error ? error || "Something went wrong" : ""}
+      </p>
     </div>
   );
 }
-
-
-
-
-

@@ -130,6 +130,8 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import OAuth from "../components/OAuth";
+
 export default function SignUp() {
   const userNameRef = useRef();
   const emailRef = useRef();
@@ -196,7 +198,9 @@ export default function SignUp() {
         <button className="bg-slate-700 text-white p-3 rounded-lg uppercase disabled:opacity-80 hover:opacity-95 ">
           {loading ? "loading..." : "Sign Up"}
         </button>
+        <OAuth/>
       </form>
+
       <div className="mt-5 flex gap-2">
         <p>Have an account?</p>
         <Link to="/sign-in">

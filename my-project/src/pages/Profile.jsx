@@ -14,33 +14,33 @@ export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
-   useEffect(() => {
-     if (image) {
-       handleFileUpload(image);
-     }
-   }, [image]);
-   const handleFileUpload = async (image) => {
-     const storage = getStorage(app);
-     const fileName = new Date().getTime() + image.name;
-     const storageRef = ref(storage, fileName);
-     const uploadTask = uploadBytesResumable(storageRef, image);
-     uploadTask.on(
-       "state_changed",
-       (snapshot) => {
-         const progress =
-           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-         setImagePercent(Math.round(progress));
-       },
-       (error) => {
-         setImageError(true);
-       },
-       () => {
-         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
-           setFormData({ ...formData, profilePicture: downloadURL })
-         );
-       }
-     );
-   };
+  useEffect(() => {
+    if (image) {
+      handleFileUpload(image);
+    }
+  }, [image]);
+  const handleFileUpload = async (image) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + image.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImagePercent(Math.round(progress));
+      },
+      (error) => {
+        setImageError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+          setFormData({ ...formData, profilePicture: downloadURL })
+        );
+      }
+    );
+  };
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -53,7 +53,7 @@ export default function Profile() {
           onChange={(e) => setImage(e.target.files[0])}
         />
         <img
-          src={currentUser.profilePicture}
+          src={formData.profilePicture || currentUser.profilePicture}
           alt="profile"
           className="h-24 w-24 self-center cursor-pointer rounded-full object-cover mt-2"
           onClick={() => fileRef.current.click()}

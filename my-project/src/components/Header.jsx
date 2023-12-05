@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
-  let {signInUp} = useParams()
+
   return (
     <div className="bg-slate-200">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">

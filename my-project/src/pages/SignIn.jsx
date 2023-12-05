@@ -7,7 +7,7 @@ import {
 } from "../redux/user/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import  OAuth from "../components/OAuth"
-export default function SignUp() {
+export default function SignIn() {
   
   const emailRef = useRef();
   const passwordRef = useRef();

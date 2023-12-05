@@ -1,11 +1,15 @@
-const express= require("express")
+import express from "express";
+import {
+  test,
+  updateUser,
+  deleteUser,
+} from "../controllers/user.js";
+import { verifyToken } from "../utils/verifyUser.js";
 
-const updateController = require("../controllers/user")
-const verifyToken = require("../utils/verifyUser")
+const router = express.Router();
 
-const router = express.Router()
+router.get("/", test);
+router.post("/update/:id", verifyToken, updateUser);
+router.delete("/delete/:id", verifyToken, deleteUser);
 
-router.get("/",updateController.test)
-router.post("/update/:id", verifyToken,updateController.updateUser);
-
-module.exports = router
+export default router;

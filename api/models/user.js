@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,13 +19,12 @@ const userSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
       default:
-        "https://static.vecteezy.com/system/resources/previews/020/765/399/non_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
+        "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg",
     },
   },
   { timestamps: true }
 );
 
+const User = mongoose.model("User", userSchema);
 
-const User = mongoose.model("User",userSchema)
-
-module.exports = User
+export default User;

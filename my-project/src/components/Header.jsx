@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
 

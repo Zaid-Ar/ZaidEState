@@ -1,16 +1,16 @@
-const { errorHandler } = require("../utils/error")
+import User from "../models/user.js";
+import { errorHandler } from "../utils/error.js";
+import bcryptjs from "bcryptjs";
 
+export const test = (req, res) => {
+  res.json({
+    message: "API is working!",
+  });
+};
 
-const User = require("../models/user")
-exports.test = (req,res,next)=>{
-    res.json({
-        message:"API is working"
-    })
-}
+// update user
 
-
- 
-exports.updateUser = async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can update only your account!"));
   }
@@ -33,6 +33,20 @@ exports.updateUser = async (req, res, next) => {
     );
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// delete user
+
+export const deleteUser = async (req, res, next) => {
+  if (req.user.id !== req.params.id) {
+    return next(errorHandler(401, "You can delete only your account!"));
+  }
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json("User has been deleted...");
   } catch (error) {
     next(error);
   }

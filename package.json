@@ -5,9 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev":"node api/index.js",
+    "dev": "node api/index.js",
     "start": "node --watch api/index.js",
-     "build":"npm install && npm install --prefix my-project && npm run build --prefix my-project"
+    "build": "npm install && npm install --prefix my-project && npm run build --prefix my-project"
   },
   "keywords": [],
   "author": "",

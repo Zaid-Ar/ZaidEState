@@ -9,7 +9,10 @@ import { app } from "../firebase";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateListing() {
+
+
+
+const CreateListing = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
@@ -132,16 +135,16 @@ export default function CreateListing() {
         return setError("Discount price must be lower than regular price");
       setLoading(true);
       setError(false);
-    const res = await fetch("/api/listing/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formData,
-        userRef: currentUser._id,
-      }),
-    });
+      const res = await fetch("/api/listing/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          userRef: currentUser._id,
+        }),
+      });
       const data = await res.json();
       setLoading(false);
       if (data.success === false) {
@@ -369,3 +372,5 @@ export default function CreateListing() {
     </main>
   );
 }
+
+export default CreateListing

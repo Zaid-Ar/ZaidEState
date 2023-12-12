@@ -132,84 +132,88 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import OAuth from "../components/OAuth";
 
-export default function SignUp() {
-  const userNameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const { loading, error } = useSelector((state) => state.user);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const username = userNameRef.current.value;
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    try {
-      dispatch(signInStart());
-      const res = await fetch("/api/auth/signup", {
-        username,
-        email,
-        password,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-      const data = await res.json();
-      console.log(data);
+import React from 'react'
 
-      if (data.success === false) {
-        dispatch(signInFailure(data.message));
-        return;
-      }
-      dispatch(signInSuccess(data));
-      navigate("/sign-in");
-    } catch (error) {
-      signInFailure(error);
-    }
-  };
+const SignUp = () => {
+ const userNameRef = useRef();
+ const emailRef = useRef();
+ const passwordRef = useRef();
+ const { loading, error } = useSelector((state) => state.user);
+ const navigate = useNavigate();
+ const dispatch = useDispatch();
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   const username = userNameRef.current.value;
+   const email = emailRef.current.value;
+   const password = passwordRef.current.value;
+   try {
+     dispatch(signInStart());
+     const res = await fetch("/api/auth/signup", {
+       username,
+       email,
+       password,
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ username, email, password }),
+     });
+     const data = await res.json();
+     console.log(data);
 
-  return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Username"
-          id="username"
-          className="bg-slate-100 p-3 rounded-lg"
-          ref={userNameRef}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          id="email"
-          className="bg-slate-100 p-3 rounded-lg"
-          ref={emailRef}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          id="password"
-          className="bg-slate-100 p-3 rounded-lg"
-          ref={passwordRef}
-        />
-        <button className="bg-slate-700 text-white p-3 rounded-lg uppercase disabled:opacity-80 hover:opacity-95 ">
-          {loading ? "loading..." : "Sign Up"}
-        </button>
-        <OAuth/>
-      </form>
+     if (data.success === false) {
+       dispatch(signInFailure(data.message));
+       return;
+     }
+     dispatch(signInSuccess(data));
+     navigate("/sign-in");
+   } catch (error) {
+     signInFailure(error);
+   }
+ };
 
-      <div className="mt-5 flex gap-2">
-        <p>Have an account?</p>
-        <Link to="/sign-in">
-          <span className="text-blue-500">Sign In</span>
-        </Link>
-      </div>
-      <p className="text-red-700 mt-5">
-        {error ? error || "Something went wrong" : ""}
-      </p>
-    </div>
-  );
+ return (
+   <div className="p-3 max-w-lg mx-auto">
+     <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
+     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+       <input
+         type="text"
+         placeholder="Username"
+         id="username"
+         className="bg-slate-100 p-3 rounded-lg"
+         ref={userNameRef}
+       />
+       <input
+         type="email"
+         placeholder="Email"
+         id="email"
+         className="bg-slate-100 p-3 rounded-lg"
+         ref={emailRef}
+       />
+       <input
+         type="password"
+         placeholder="Password"
+         id="password"
+         className="bg-slate-100 p-3 rounded-lg"
+         ref={passwordRef}
+       />
+       <button className="bg-slate-700 text-white p-3 rounded-lg uppercase disabled:opacity-80 hover:opacity-95 ">
+         {loading ? "loading..." : "Sign Up"}
+       </button>
+       <OAuth />
+     </form>
+
+     <div className="mt-5 flex gap-2">
+       <p>Have an account?</p>
+       <Link to="/sign-in">
+         <span className="text-blue-500">Sign In</span>
+       </Link>
+     </div>
+     <p className="text-red-700 mt-5">
+       {error ? error || "Something went wrong" : ""}
+     </p>
+   </div>
+ );
 }
+
+export default SignUp

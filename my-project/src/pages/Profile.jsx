@@ -19,7 +19,7 @@ import {
 } from "../redux/user/userSlice";
 
 import { Link } from "react-router-dom";
-import React from 'react'
+
 
 const Profile = () => {
 const dispatch = useDispatch();

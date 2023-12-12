@@ -5,7 +5,7 @@ import userRoutes from "./routes/user.js";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import listingRouter from "./routes/listing.js";
-import path from "path";
+// import path from "path";
 dotenv.config();
 
 mongoose
@@ -17,11 +17,15 @@ mongoose
     console.log(err);
   });
 
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 const app = express();
 
+// app.use(express.static(path.join(__dirname, "/client/dist")));
 
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+// });
 
 app.use(express.json());
 
@@ -34,12 +38,6 @@ app.listen(3000, () => {
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/listing", listingRouter);
-
-app.use(express.static(path.join(__dirname, "/my-project/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "my-project", "dist", "index.html"));
-});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
